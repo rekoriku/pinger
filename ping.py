@@ -44,22 +44,28 @@ class Pinger:
     #pings = deque([], maxlen=60)
 
     def roundstr(self,val):
-        return str(round(val))
+        if val is not None:
+            return str(round(val))
+        else:
+            print('None')
 
     def start(self):
         while True:
             rnd = self.roundstr
             pings = self.pings
 
-            pings.appendleft(pingi3(self.hostname, unit='ms')) # push ping value to deques first index
-            currentping = rnd(pings[0]) #round first index val and convert to string
-            averageping = rnd(average(pings)) #convert average ping vals to string
-            maxping = rnd(max(pings)) #convert max ping to string
-      
-            print(Fore.LIGHTBLUE_EX + 'current ping: ' + currentping)
-            print(Style.DIM + Fore.MAGENTA + 'average ping: ' + averageping)
-            print(Style.DIM + Fore.RED + 'max ping: ' + maxping)
-            print('')
+            if pingi3(self.hostname, unit='ms') is not None:
+                pings.appendleft(pingi3(self.hostname, unit='ms')) # push ping value to deques first index
+                currentping = rnd(pings[0]) #round first index val and convert to string
+                averageping = rnd(average(pings)) #convert average ping vals to string
+                maxping = rnd(max(pings)) #convert max ping to string
+        
+                print(Fore.LIGHTBLUE_EX + 'current ping: ' + currentping)
+                print(Style.DIM + Fore.MAGENTA + 'average ping: ' + averageping)
+                print(Style.DIM + Fore.RED + 'max ping: ' + maxping)
+                print('')
+            else:
+                print('timeout')
             # print('------------------------')
             # saveJson(dicJson(pings[0]))
 
